@@ -28,9 +28,12 @@
          int pos = strlen(line) - 12; 
          if (pos > 0) line[pos] = 0;         
       }
-      
-      if (ch == 0xAA) // line fill detections 
-         eol = ( count >= 85 && 0x4e02aa == ltag ) || ( count >= 7 && 0x4e02aa != ltag );
+
+      if (ch == 0x00) // line fill detections 
+         eol = ( 64 == count && 0x4e02aa == ltag );
+         
+      if (ch == 0xAA) 
+         eol = ( count >= 64 && 0x4e02aa == ltag ) || ( count >= 7 && 0x4e02aa != ltag );
       
       if (eol || ltb) {
         

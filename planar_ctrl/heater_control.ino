@@ -49,7 +49,7 @@ void CHeaterControl::decode_rx() {
    if (strstr(line, "aa 04 0a 00 0f") && 17 == count)
      decode_info2();     
    else
-   if (0x4e02aa == ltag && count >= 75) 
+   if (0x4e02aa == ltag && count >= 64)
      decode_diag();     
    else  {
       sprintf(msg, "Ignored line tag 0x%lx", ltag);
@@ -104,6 +104,12 @@ void CHeaterControl::decode_diag() { // only 85 byte vectors
    
    // temperatures in K 
    sprintf(msg, "'flame_ind':%d, 'exhaust_temp':%d, ", word_ptr(0x1b, true) - 273, word_ptr(0x1d, true) - 273);  
+   msg_print(qfixmsg());
+
+   sprintf(msg, "'board_temp':%d, ", data[0x22]);
+   msg_print(qfixmsg());
+
+   sprintf(msg, "'w33':%d, 'b36':%d, 'w37':%d, ", word_ptr(0x33, true), data[0x36], word_ptr(0x37, true)); 
    msg_print(qfixmsg());
     
    float vdf = 0.02f * (float)data[0x2c];     
